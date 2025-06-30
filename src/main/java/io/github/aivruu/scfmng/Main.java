@@ -25,7 +25,12 @@ public final class Main {
 			return;
 		}
 		LOGGER.info("Connected to the database successfully.");
-		clientController = new ClientController(databaseController);
+    quotesController = new QuotesController(databaseController);
+    if (!quotesController.start()) {
+      LOGGER.severe("Failed to create quotes-table in the database.");
+      return;
+    }
+    clientController = new ClientController(databaseController);
     if (!clientController.start()) {
       LOGGER.severe("Failed to create client-table in the database.");
       return;
@@ -33,11 +38,6 @@ public final class Main {
     equipmentController = new EquipmentController(databaseController);
     if (!equipmentController.start()) {
       LOGGER.severe("Failed to create equipment-table in the database.");
-      return;
-    }
-    quotesController = new QuotesController(clientController, databaseController);
-    if (!quotesController.start()) {
-      LOGGER.severe("Failed to create quotes-table in the database.");
       return;
     }
     LOGGER.info("Required database-tables were created successfully.");
