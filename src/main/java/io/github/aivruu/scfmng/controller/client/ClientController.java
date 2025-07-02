@@ -2,7 +2,7 @@ package io.github.aivruu.scfmng.controller.client;
 
 import io.github.aivruu.scfmng.controller.Controller;
 import io.github.aivruu.scfmng.controller.DatabaseController;
-import io.github.aivruu.scfmng.controller.abstraction.StatementConstants;
+import io.github.aivruu.scfmng.controller.database.StatementConstants;
 import io.github.aivruu.scfmng.model.Client;
 import io.github.aivruu.scfmng.model.Quote;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * {@link Controller} implementation for exclusive {@link Client} management.
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 public final class ClientController extends Controller {
   public ClientController(final DatabaseController databaseController) {
@@ -47,10 +47,14 @@ public final class ClientController extends Controller {
    * @return A {@link CompletableFuture} that will be completed with a {@link Client} or
    * {@code null} if the id does not exist in the database-table.
    * @see DatabaseController#connection()
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public CompletableFuture<Client> findClientData(final String id) {
-    // Without this, it'll be very slow, and we can't even load it in cache.
+    /*
+     * Without this, it'll be very slow, and we can't even load it in cache, well.
+     *
+     * We retrieve this information and with don't even use it, so, yeah, bull****.
+     */
     return CompletableFuture.supplyAsync(() -> {
       try (
          final PreparedStatement clientStatement = super.databaseController.connection().prepareStatement(
@@ -58,6 +62,7 @@ public final class ClientController extends Controller {
          final PreparedStatement quotesStatement = super.databaseController.connection().prepareStatement(
             StatementConstants.QUOTES_RETRIEVING_BY_CLIENT_ID)) {
         clientStatement.setString(1, id);
+        quotesStatement.setString(1, id);
         try (
            final ResultSet clientResultSet = clientStatement.executeQuery();
            final ResultSet quotesResultSet = quotesStatement.executeQuery()) {
@@ -74,6 +79,7 @@ public final class ClientController extends Controller {
         }
       } catch (final SQLException exception) {
         // oops.
+        exception.printStackTrace();
         return null;
       }
     });
@@ -86,7 +92,7 @@ public final class ClientController extends Controller {
    * @return A {@link CompletableFuture} that will be completed with {@code true} if the client's
    * data was saved, {@code false} otherwise.
    * @see DatabaseController#connection()
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public CompletableFuture<Boolean> saveClientData(final Client client) {
     return CompletableFuture.supplyAsync(() -> {
@@ -101,6 +107,7 @@ public final class ClientController extends Controller {
         clientStatement.executeUpdate();
         return true;
       } catch (final SQLException exception) {
+        exception.printStackTrace();
         return false;
       }
     });
@@ -113,15 +120,17 @@ public final class ClientController extends Controller {
    * @return A {@link CompletableFuture} that will be completed with {@code true} if the client's
    * information was deleted, {@code false} otherwise.
    * @see DatabaseController#connection()
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public CompletableFuture<Boolean> deleteClientData(final String id) {
     return CompletableFuture.supplyAsync(() -> {
       try (final PreparedStatement statement = super.databaseController.connection().prepareStatement(
          StatementConstants.CLIENT_INFORMATION_DELETE)) {
         statement.setString(1, id);
-        return statement.execute();
+        statement.executeUpdate();
+        return true;
       } catch (final SQLException exception) {
+        exception.printStackTrace();
         return null;
       }
     });
