@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Represents a client in the application.
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 public final class Client {
   private final String id;
@@ -24,7 +24,7 @@ public final class Client {
    * @param lastNameTwo the client's second last name.
    * @param quotes the client's quotes (retrieved from the database).
    * @param email the client's email address.
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public Client(
      final String id,
@@ -45,7 +45,7 @@ public final class Client {
    * Returns the client's id.
    *
    * @return The client's id.
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public String id() {
     return this.id;
@@ -55,7 +55,7 @@ public final class Client {
    * Returns the client's name.
    *
    * @return The client's name.
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public String name() {
     return this.name;
@@ -65,7 +65,7 @@ public final class Client {
    * Returns the client's first last name.
    *
    * @return The client's first last name.
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public String lastNameOne() {
     return this.lastNameOne;
@@ -75,7 +75,7 @@ public final class Client {
    * Returns the client's second last name.
    *
    * @return The client's second last name.
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public String lastNameTwo() {
     return this.lastNameTwo;
@@ -85,7 +85,7 @@ public final class Client {
    * Returns the client's quotes.
    *
    * @return The client's quotes.
-   * @since 1.0.0
+   * @since 0.0.1
    */
   public List<Quote> quotes() {
     return this.quotes;
