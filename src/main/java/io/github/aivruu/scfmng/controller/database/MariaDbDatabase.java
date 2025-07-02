@@ -1,4 +1,4 @@
-package io.github.aivruu.scfmng.controller.abstraction;
+package io.github.aivruu.scfmng.controller.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
