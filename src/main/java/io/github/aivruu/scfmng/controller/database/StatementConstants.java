@@ -1,4 +1,4 @@
-package io.github.aivruu.scfmng.controller.abstraction;
+package io.github.aivruu.scfmng.controller.database;
 
 public final class StatementConstants {
   public static final String CLIENT_TABLE_CREATE = """
@@ -32,7 +32,7 @@ public final class StatementConstants {
      "SELECT name, last_name_one, last_name_two, email FROM clients WHERE id = ?";
   public static final String CLIENT_INFORMATION_SAVE = """
      INSERT INTO clients(id, name, last_name_one, last_name_two, email)
-     VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATED KEY UPDATE
+     VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
      name = VALUES(name),
      last_name_one = VALUES(last_name_one),
      last_name_two = VALUES(last_name_two),
@@ -47,7 +47,7 @@ public final class StatementConstants {
   public static final String CLIENT_INFORMATION_DELETE = "DELETE FROM clients WHERE id = ?;";
   public static final String QUOTE_INFORMATION_SAVE = """
      INSERT INTO quotes(id, client_id, equipment_id, amount, price, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATED KEY UPDATE
+     VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE
      client_id = VALUES(client_id),
      equipment_id = VALUES(equipment_id),
      amount = VALUES(amount),
@@ -57,9 +57,11 @@ public final class StatementConstants {
   public static final String QUOTE_INFORMATION_DELETE = "DELETE FROM quotes WHERE id = ?;";
   public static final String EQUIPMENT_INFORMATION_RETRIEVE =
      "SELECT description, u_value, stock, manufacturer_id FROM equipments WHERE id = ?;";
+  public static final String ALL_EQUIPMENTS_RETRIEVING =
+     "SELECT id, description, u_value, stock, manufacturer_id FROM equipments;";
   public static final String EQUIPMENT_INFORMATION_SAVE = """
      INSERT INTO equipments(id, description, u_value, stock, manufacturer_id) VALUES (?, ?, ?, ?, ?)
-     ON DUPLICATED KEY UPDATE
+     ON DUPLICATE KEY UPDATE
      description = VALUES(description),
      u_value = VALUES(u_value),
      stock = VALUES(stock),
